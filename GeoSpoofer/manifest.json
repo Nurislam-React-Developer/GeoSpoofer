@@ -1,9 +1,14 @@
 {
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"name": "GeoSpoofer",
-	"version": "1.0",
-	"description": "Подменяет геолокацию на фиксированные координаты",
-	"permissions": ["geolocation", "<all_urls>"],
+	"version": "1.1",
+	"description": "Подменяет геолокацию на заданные координаты",
+	"permissions": ["storage"],
+	"host_permissions": ["<all_urls>"],
+	"action": {
+		"default_popup": "popup.html",
+		"default_icon": "navigation.png"
+	},
 	"content_scripts": [
 		{
 			"matches": ["<all_urls>"],

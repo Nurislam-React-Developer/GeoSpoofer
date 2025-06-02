@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<title>GeoSpoofer</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				min-width: 220px;
+				padding: 10px;
+			}
+			label {
+				display: block;
+				margin-top: 10px;
+			}
+			input[type='number'] {
+				width: 100%;
+				margin-top: 2px;
+			}
+			button {
+				margin-top: 15px;
+				width: 100%;
+				padding: 8px;
+				background: #1976d2;
+				color: #fff;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+			}
+			.current {
+				margin-top: 10px;
+				font-size: 0.95em;
+				color: #555;
+			}
+		</style>
+	</head>
+	<body>
+		<h3>GeoSpoofer</h3>
+		<div class="current">
+			<span>Текущие координаты:</span>
+			<br />
+			<span id="current"></span>
+		</div>
+		<label>
+			Широта (lat):
+			<input type="number" step="any" id="lat" />
+		</label>
+		<label>
+			Долгота (lng):
+			<input type="number" step="any" id="lng" />
+		</label>
+		<button id="save">Сохранить</button>
+		<script src="popup.js"></script>
+	</body>
+</html>
