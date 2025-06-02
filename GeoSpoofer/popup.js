@@ -62,16 +62,41 @@ if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
 	});
 }
 
+// Создаём кастомное уведомление
+function showModal(message) {
+	let modal = document.getElementById('geospoofer-modal');
+	if (!modal) {
+		modal = document.createElement('div');
+		modal.id = 'geospoofer-modal';
+		modal.style.position = 'fixed';
+		modal.style.left = '50%';
+		modal.style.top = '50%';
+		modal.style.transform = 'translate(-50%, -50%)';
+		modal.style.background = '#fff';
+		modal.style.border = '1px solid #1976d2';
+		modal.style.borderRadius = '8px';
+		modal.style.boxShadow = '0 2px 12px rgba(0,0,0,0.15)';
+		modal.style.padding = '18px 28px';
+		modal.style.zIndex = '9999';
+		modal.style.fontSize = '1.1em';
+		modal.style.color = '#1976d2';
+		document.body.appendChild(modal);
+	}
+	modal.textContent = message;
+	modal.style.display = 'block';
+	setTimeout(() => {
+		modal.style.display = 'none';
+		window.close();
+	}, 3000);
+}
+
 document.getElementById('save').addEventListener('click', () => {
 	const lat = parseFloat(latInput.value);
 	const lng = parseFloat(lngInput.value);
 	if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
 		chrome.storage.local.set({ fakeLat: lat, fakeLng: lng }, () => {
 			currentSpan.textContent = `${lat}, ${lng}`;
-			alert('Координаты сохранены!');
-			setTimeout(() => {
-				window.close();
-			}, 3000);
+			showModal('Координаты сохранены!');
 		});
 	}
 });
