@@ -6,31 +6,45 @@
 		<style>
 			body {
 				font-family: Arial, sans-serif;
-				min-width: 220px;
-				padding: 10px;
+				min-width: 240px;
+				padding: 16px;
+				background: #f7f9fa;
+			}
+			h3 {
+				margin-top: 0;
+				color: #1976d2;
 			}
 			label {
 				display: block;
-				margin-top: 10px;
+				margin-top: 12px;
 			}
+			select,
 			input[type='number'] {
 				width: 100%;
-				margin-top: 2px;
+				margin-top: 4px;
+				padding: 6px;
+				border-radius: 4px;
+				border: 1px solid #bbb;
 			}
 			button {
-				margin-top: 15px;
+				margin-top: 16px;
 				width: 100%;
-				padding: 8px;
+				padding: 10px;
 				background: #1976d2;
 				color: #fff;
 				border: none;
 				border-radius: 4px;
+				font-size: 1em;
 				cursor: pointer;
 			}
 			.current {
-				margin-top: 10px;
-				font-size: 0.95em;
+				margin-top: 12px;
+				font-size: 0.97em;
 				color: #555;
+			}
+			.city-label {
+				font-weight: bold;
+				margin-top: 18px;
 			}
 		</style>
 	</head>
@@ -41,6 +55,17 @@
 			<br />
 			<span id="current"></span>
 		</div>
+		<label class="city-label">Выберите город:</label>
+		<select id="city">
+			<option value="51.4183621178467,172.4604497949204">Тихий океан</option>
+			<option value="-75.250973,-0.071389">Антарктида</option>
+			<option value="51.5074,-0.1278">Лондон</option>
+			<option value="48.8566,2.3522">Париж</option>
+			<option value="40.7128,-74.0060">Нью-Йорк</option>
+			<option value="35.6895,139.6917">Токио</option>
+			<option value="55.7558,37.6176">Москва</option>
+			<option value="-33.8688,151.2093">Сидней</option>
+		</select>
 		<label>
 			Широта (lat):
 			<input type="number" step="any" id="lat" />
