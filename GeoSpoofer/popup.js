@@ -69,6 +69,9 @@ document.getElementById('save').addEventListener('click', () => {
 		chrome.storage.local.set({ fakeLat: lat, fakeLng: lng }, () => {
 			currentSpan.textContent = `${lat}, ${lng}`;
 			alert('Координаты сохранены!');
+			setTimeout(() => {
+				window.close();
+			}, 3000);
 		});
 	}
 });
