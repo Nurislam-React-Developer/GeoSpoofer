@@ -48,11 +48,27 @@
 	document.documentElement.appendChild(script);
 
 	// Сохраняем координаты из chrome.storage в localStorage страницы
-	if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-		chrome.storage.local.get(['fakeLat', 'fakeLng'], (result) => {
-			const lat = result.fakeLat ?? 51.4183621178467;
-			const lng = result.fakeLng ?? 172.4604497949204;
-			localStorage.__geoSpoofer = JSON.stringify({ lat, lng });
-		});
-	}
-})();
+	// ...existing code...
+
+    // Сохраняем координаты из chrome.storage в localStorage страницы
+    function syncCoordsToLocalStorage() {
+        if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+            chrome.storage.local.get(['fakeLat', 'fakeLng'], (result) => {
+                const lat = result.fakeLat ?? 51.4183621178467;
+                const lng = result.fakeLng ?? 172.4604497949204;
+                localStorage.__geoSpoofer = JSON.stringify({ lat, lng });
+            });
+        }
+    }
+    syncCoordsToLocalStorage();
+
+    // Следим за изменениями координат в chrome.storage и обновляем localStorage
+    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.onChanged) {
+        chrome.storage.onChanged.addListener((changes, area) => {
+            if (area === 'local' && (changes.fakeLat || changes.fakeLng)) {
+                syncCoordsToLocalStorage();
+            }
+        });
+    }
+
+  })
