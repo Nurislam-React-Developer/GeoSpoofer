@@ -1,5 +1,4 @@
 (function () {
-	// Внедряем скрипт в контекст страницы для максимальной подмены
 	const script = document.createElement('script');
 	script.textContent = `
         (function() {
@@ -11,7 +10,7 @@
                         return;
                     } catch(e) {}
                 }
-                cb(51.4183621178467, 172.4604497949204);
+                cb(51.4183621178467, 172.4604497949204); // Координаты по умолчанию
             }
             const createFakePosition = (lat, lng) => ({
                 coords: {
@@ -48,27 +47,31 @@
 	document.documentElement.appendChild(script);
 
 	// Сохраняем координаты из chrome.storage в localStorage страницы
-	// ...existing code...
+	function syncCoordsToLocalStorage() {
+		if (
+			typeof chrome !== 'undefined' &&
+			chrome.storage &&
+			chrome.storage.local
+		) {
+			chrome.storage.local.get(['fakeLat', 'fakeLng'], (result) => {
+				const lat = result.fakeLat ?? 51.4183621178467;
+				const lng = result.fakeLng ?? 172.4604497949204;
+				localStorage.__geoSpoofer = JSON.stringify({ lat, lng });
+			});
+		}
+	}
+	syncCoordsToLocalStorage();
 
-    // Сохраняем координаты из chrome.storage в localStorage страницы
-    function syncCoordsToLocalStorage() {
-        if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-            chrome.storage.local.get(['fakeLat', 'fakeLng'], (result) => {
-                const lat = result.fakeLat ?? 51.4183621178467;
-                const lng = result.fakeLng ?? 172.4604497949204;
-                localStorage.__geoSpoofer = JSON.stringify({ lat, lng });
-            });
-        }
-    }
-    syncCoordsToLocalStorage();
-
-    // Следим за изменениями координат в chrome.storage и обновляем localStorage
-    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.onChanged) {
-        chrome.storage.onChanged.addListener((changes, area) => {
-            if (area === 'local' && (changes.fakeLat || changes.fakeLng)) {
-                syncCoordsToLocalStorage();
-            }
-        });
-    }
-
-  })
+	// Следим за изменениями координат в chrome.storage и обновляем localStorage
+	if (
+		typeof chrome !== 'undefined' &&
+		chrome.storage &&
+		chrome.storage.onChanged
+	) {
+		chrome.storage.onChanged.addListener((changes, area) => {
+			if (area === 'local' && (changes.fakeLat || changes.fakeLng)) {
+				syncCoordsToLocalStorage();
+			}
+		});
+	}
+})();
