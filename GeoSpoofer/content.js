@@ -8,7 +8,9 @@
                         const {lat, lng} = JSON.parse(localStorage.__geoSpoofer);
                         cb(lat, lng);
                         return;
-                    } catch(e) {}
+                    } catch(e) {
+                        console.error('Ошибка чтения координат из localStorage:', e);
+                    }
                 }
                 cb(51.4183621178467, 172.4604497949204); // Координаты по умолчанию
             }
@@ -27,15 +29,23 @@
             const fakeGetCurrentPosition = function(success, error, options) {
                 getCoords((lat, lng) => {
                     console.log('🌍 Подмена getCurrentPosition');
-                    success(createFakePosition(lat, lng));
+                    if (lat && lng) {
+                        success(createFakePosition(lat, lng));
+                    } else {
+                        error({ code: 2, message: 'POSITION_UNAVAILABLE' });
+                    }
                 });
             };
             const fakeWatchPosition = function(success, error, options) {
                 getCoords((lat, lng) => {
                     console.log('🌍 Подмена watchPosition');
-                    success(createFakePosition(lat, lng));
+                    if (lat && lng) {
+                        success(createFakePosition(lat, lng));
+                    } else {
+                        error({ code: 2, message: 'POSITION_UNAVAILABLE' });
+                    }
                 });
-                return Math.floor(Math.random() * 1000000);
+                return Math.floor(Math.random() * 1000000); // Возвращаем ID наблюдения
             };
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition = fakeGetCurrentPosition;
